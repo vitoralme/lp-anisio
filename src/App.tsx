@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Menu, X, ArrowRight, Play, Star, ChevronDown, ChevronUp,
   MapPin, Phone, Mail, Building2, HardHat, Wrench, Paintbrush,
   Truck, DollarSign, ShieldCheck, Award, CheckCircle2, Check,
-  Facebook, Twitter, Linkedin, Instagram, Youtube, TrendingUp, Quote, Home, Hammer, Clock, ClipboardCheck, Shield
+  Facebook, Twitter, Linkedin, Instagram, Youtube, TrendingUp, Quote, Home, Hammer, Clock, ClipboardCheck, Shield, Maximize2
 } from 'lucide-react';
 
 const Logo = ({ dark = false }: { dark?: boolean }) => (
@@ -32,6 +32,8 @@ export default function App() {
   const whatsappLink = "https://wa.me/5531998828383?text=Ol%C3%A1,%20estou%20vindo%20do%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqs, setOpenFaqs] = useState<number[]>([0, 5]);
+  const [selectedTab, setSelectedTab] = useState("modelo-1");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const toggleFaq = (index: number) => {
     setOpenFaqs((prev) =>
@@ -260,6 +262,130 @@ export default function App() {
                 </motion.div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Especificações Técnicas */}
+        <section className="py-24 bg-white rounded-2xl shadow-sm">
+          <div className="w-full max-w-[1240px] mx-auto px-6">
+            <div className="flex flex-col lg:flex-row justify-between items-start mb-16 gap-8">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="max-w-2xl">
+                <div className="flex items-center gap-2 text-[#e6c615] font-bold text-sm tracking-wider uppercase mb-4">
+                  <span className="w-8 h-px bg-[#e6c615]" /> ESPECIFICAÇÕES TÉCNICAS
+                </div>
+                <h2 className="font-heading text-[42px] font-bold text-[#1F2C35] leading-tight">
+                  Detalhes de cada modelo
+                </h2>
+              </motion.div>
+              <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} className="text-gray-500 max-w-md pt-2">
+                Conheça as dimensões, inércia e capacidade de cada modelo de cubeta disponível para otimizar sua obra.
+                <span className="block mt-2 text-xs text-[#e6c615]/70 font-medium italic">Clique na imagem para visualizar melhor as medidas</span>
+              </motion.p>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12">
+              {[
+                { id: "modelo-1", label: "600" },
+                { id: "modelo-2", label: "610" },
+                { id: "modelo-3", label: "610-B125" },
+                { id: "modelo-4", label: "650" },
+                { id: "modelo-5", label: "660" },
+                { id: "modelo-6", label: "700" },
+                { id: "modelo-7", label: "740" },
+                { id: "modelo-8", label: "800" },
+                { id: "modelo-9", label: "830" },
+                { id: "modelo-10", label: "875" },
+                { id: "modelo-11", label: "900" }
+              ].map((tab) => (
+                <motion.button
+                  key={tab.id}
+                  onClick={() => setSelectedTab(tab.id)}
+                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm md:text-base ${
+                    selectedTab === tab.id
+                      ? "bg-[#e6c615] text-[#1F2C35] shadow-lg"
+                      : "bg-gray-100 text-[#1F2C35] hover:bg-gray-200"
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {tab.label}
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Tab Content */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedTab}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="relative group cursor-zoom-in"
+                onClick={(e) => {
+                  const img = e.currentTarget.querySelector('img');
+                  if (img) setSelectedImage(img.getAttribute('src'));
+                }}
+              >
+                <img
+                  src={`imagens/${
+                    selectedTab === "modelo-1" ? "600.gif" :
+                    selectedTab === "modelo-2" ? "610.gif" :
+                    selectedTab === "modelo-3" ? "610-B125.webp" :
+                    selectedTab === "modelo-4" ? "650.gif" :
+                    selectedTab === "modelo-5" ? "660.gif" :
+                    selectedTab === "modelo-6" ? "700.gif" :
+                    selectedTab === "modelo-7" ? "740.gif" :
+                    selectedTab === "modelo-8" ? "800.webp" :
+                    selectedTab === "modelo-9" ? "830.webp" :
+                    selectedTab === "modelo-10" ? "875.webp" :
+                    "900.gif"
+                  }`}
+                  alt="Especificações técnicas"
+                  className="w-full max-w-4xl mx-auto h-auto object-contain px-0 md:px-4"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  <div className="bg-white/80 p-3 rounded-full shadow-lg backdrop-blur-sm transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                    <Maximize2 className="w-6 h-6 text-[#e6c615]" />
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Lightbox Modal */}
+            <AnimatePresence>
+              {selectedImage && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSelectedImage(null)}
+                  className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+                >
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    className="relative max-w-5xl w-full h-full flex items-center justify-center"
+                  >
+                    <img
+                      src={selectedImage}
+                      className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                      alt="Especificações em destaque"
+                    />
+                    <button
+                      onClick={() => setSelectedImage(null)}
+                      className="absolute top-0 right-0 m-4 w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </section>
 
