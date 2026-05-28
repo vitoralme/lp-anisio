@@ -34,6 +34,33 @@ export default function App() {
   const [openFaqs, setOpenFaqs] = useState<number[]>([0, 5]);
   const [selectedTab, setSelectedTab] = useState("modelo-1");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [directionType, setDirectionType] = useState<"unidirecional" | "bidirecional">("bidirecional");
+
+  const bidirecionais = [
+    { id: "modelo-1", label: "600" },
+    { id: "modelo-3", label: "610" },
+    { id: "modelo-4", label: "610-B125" },
+    { id: "modelo-7", label: "650" },
+    { id: "modelo-9", label: "660" },
+    { id: "modelo-11", label: "700" },
+    { id: "modelo-12", label: "740" },
+    { id: "modelo-14", label: "800" },
+    { id: "modelo-16", label: "830" },
+    { id: "modelo-18", label: "875" },
+    { id: "modelo-20", label: "900" }
+  ];
+
+  const unidirecionais = [
+    { id: "modelo-2", label: "600u" },
+    { id: "modelo-5", label: "610u" },
+    { id: "modelo-6", label: "640u" },
+    { id: "modelo-8", label: "655u" },
+    { id: "modelo-10", label: "685u" },
+    { id: "modelo-13", label: "755u" },
+    { id: "modelo-15", label: "800u" },
+    { id: "modelo-17", label: "830u" },
+    { id: "modelo-19", label: "875u" }
+  ];
 
   const toggleFaq = (index: number) => {
     setOpenFaqs((prev) =>
@@ -283,21 +310,39 @@ export default function App() {
               </motion.p>
             </div>
 
+            {/* Direction Type Navigation */}
+            <div className="flex justify-center gap-4 mb-8">
+              <button
+                onClick={() => {
+                  setDirectionType("bidirecional");
+                  setSelectedTab(bidirecionais[0].id);
+                }}
+                className={`px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-300 ${
+                  directionType === "bidirecional"
+                    ? "bg-[#e6c615] text-[#1F2C35] shadow-lg scale-105"
+                    : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                }`}
+              >
+                Bidirecionais
+              </button>
+              <button
+                onClick={() => {
+                  setDirectionType("unidirecional");
+                  setSelectedTab(unidirecionais[0].id);
+                }}
+                className={`px-6 py-3 rounded-xl font-bold cursor-pointer transition-all duration-300 ${
+                  directionType === "unidirecional"
+                    ? "bg-[#e6c615] text-[#1F2C35] shadow-lg scale-105"
+                    : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                }`}
+              >
+                Unidirecionais
+              </button>
+            </div>
+
             {/* Tab Navigation */}
             <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12">
-              {[
-                { id: "modelo-1", label: "600" },
-                { id: "modelo-2", label: "610" },
-                { id: "modelo-3", label: "610-B125" },
-                { id: "modelo-4", label: "650" },
-                { id: "modelo-5", label: "660" },
-                { id: "modelo-6", label: "700" },
-                { id: "modelo-7", label: "740" },
-                { id: "modelo-8", label: "800" },
-                { id: "modelo-9", label: "830" },
-                { id: "modelo-10", label: "875" },
-                { id: "modelo-11", label: "900" }
-              ].map((tab) => (
+              {(directionType === "bidirecional" ? bidirecionais : unidirecionais).map((tab) => (
                 <motion.button
                   key={tab.id}
                   onClick={() => setSelectedTab(tab.id)}
@@ -331,15 +376,24 @@ export default function App() {
                 <img
                   src={`imagens/${
                     selectedTab === "modelo-1" ? "600.gif" :
-                    selectedTab === "modelo-2" ? "610.gif" :
-                    selectedTab === "modelo-3" ? "610-B125.webp" :
-                    selectedTab === "modelo-4" ? "650.gif" :
-                    selectedTab === "modelo-5" ? "660.gif" :
-                    selectedTab === "modelo-6" ? "700.gif" :
-                    selectedTab === "modelo-7" ? "740.gif" :
-                    selectedTab === "modelo-8" ? "800.webp" :
-                    selectedTab === "modelo-9" ? "830.webp" :
-                    selectedTab === "modelo-10" ? "875.webp" :
+                    selectedTab === "modelo-2" ? "600u.gif" :
+                    selectedTab === "modelo-3" ? "610.gif" :
+                    selectedTab === "modelo-4" ? "610-B125.webp" :
+                    selectedTab === "modelo-5" ? "610u.gif" :
+                    selectedTab === "modelo-6" ? "640u.gif" :
+                    selectedTab === "modelo-7" ? "650.gif" :
+                    selectedTab === "modelo-8" ? "655u.gif" :
+                    selectedTab === "modelo-9" ? "660.gif" :
+                    selectedTab === "modelo-10" ? "685u.gif" :
+                    selectedTab === "modelo-11" ? "700.gif" :
+                    selectedTab === "modelo-12" ? "740.gif" :
+                    selectedTab === "modelo-13" ? "755u.gif" :
+                    selectedTab === "modelo-14" ? "800.webp" :
+                    selectedTab === "modelo-15" ? "800u.gif" :
+                    selectedTab === "modelo-16" ? "830.webp" :
+                    selectedTab === "modelo-17" ? "830u.gif" :
+                    selectedTab === "modelo-18" ? "875.webp" :
+                    selectedTab === "modelo-19" ? "875u.gif" :
                     "900.gif"
                   }`}
                   alt="Especificações técnicas"
